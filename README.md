@@ -1,0 +1,81 @@
+# TGS-2024048316 — CompTIA Linux+ XK0-006 Hands-On Labs
+
+> **Course:** WSQ — CompTIA Certified Linux+ Training
+> **Course Code:** TGS-2024048316
+> **Register here:** https://www.tertiarycourses.com.sg/wsq-comptia-linux-training.html
+
+These are the official hands-on lab exercises for the WSQ CompTIA Certified Linux+ Training course delivered by [**Tertiary Infotech Academy Pte Ltd**](https://www.tertiarycourses.com.sg/).
+
+A complete set of **30 step-by-step labs** aligned to the CompTIA Linux+ XK0-006 (V8) exam objectives. Every lab runs on the free **Killercoda Ubuntu Playground** (https://killercoda.com/playgrounds/scenario/ubuntu) — no local install, no virtual machine, no credit card required.
+
+---
+
+## How to use
+
+1. Open the Killercoda playground in your browser: https://killercoda.com/playgrounds/scenario/ubuntu
+2. Pick a lab from the list below and follow the steps in order.
+3. Reset the playground between labs that change kernel, firewall, or systemd state.
+4. See [labs/tools.md](labs/tools.md) for every free tool used (with install commands and download links).
+
+---
+
+## Lab catalogue
+
+### Domain 1 — System Management (23%)
+- [Lab 1 — Boot Process & Filesystem Hierarchy](labs/lab-01-boot-fhs.md)
+- [Lab 2 — Kernel Modules & Device Management](labs/lab-02-kernel-devices.md)
+- [Lab 3 — Storage with LVM, Partitions & Filesystems](labs/lab-03-storage-lvm.md)
+- [Lab 4 — Network Configuration with NetworkManager & Netplan](labs/lab-04-networking.md)
+- [Lab 5 — Shell Operations, Redirection & Text Processing](labs/lab-05-shell.md)
+- [Lab 6 — Backup & Restore with tar, rsync & dd](labs/lab-06-backup-restore.md)
+- [Lab 7 — Virtualization with QEMU/KVM & libvirt](labs/lab-07-virtualization.md)
+
+### Domain 2 — Services and User Management (20%)
+- [Lab 8 — File & Directory Management](labs/lab-08-files-directories.md)
+- [Lab 9 — Local Account & Group Management](labs/lab-09-users-groups.md)
+- [Lab 10 — Processes, Jobs & Scheduling](labs/lab-10-processes-jobs.md)
+- [Lab 11 — Software & Package Management](labs/lab-11-packages.md)
+- [Lab 12 — Service Management with systemd](labs/lab-12-systemd.md)
+- [Lab 13 — Containers with Docker & Podman](labs/lab-13-containers.md)
+
+### Domain 3 — Security (18%)
+- [Lab 14 — AAA: sudo, PAM & Polkit](labs/lab-14-aaa-sudo-pam.md)
+- [Lab 15 — Firewalls with firewalld, ufw, nftables & iptables](labs/lab-15-firewall.md)
+- [Lab 16 — OS Hardening: SELinux, SSH & SUID](labs/lab-16-hardening.md)
+- [Lab 17 — Account Hardening with pam_tally2 & MFA](labs/lab-17-account-hardening.md)
+- [Lab 18 — Cryptography: GPG, LUKS2, OpenSSL & WireGuard](labs/lab-18-crypto.md)
+- [Lab 19 — Compliance, Auditing & File Integrity (AIDE, OpenSCAP)](labs/lab-19-compliance-audit.md)
+
+### Domain 4 — Automation, Orchestration & Scripting (17%)
+- [Lab 20 — Infrastructure as Code with Ansible](labs/lab-20-ansible.md)
+- [Lab 21 — Bash Shell Scripting](labs/lab-21-bash-scripting.md)
+- [Lab 22 — Python for System Administration](labs/lab-22-python.md)
+- [Lab 23 — Version Control with Git](labs/lab-23-git.md)
+- [Lab 24 — Responsible AI Use for Linux Administrators](labs/lab-24-ai-best-practices.md)
+
+### Domain 5 — Troubleshooting (22%)
+- [Lab 25 — Monitoring with SNMP, Prometheus & Node Exporter](labs/lab-25-monitoring.md)
+- [Lab 26 — Troubleshoot Hardware, Storage & OS Issues](labs/lab-26-troubleshoot-storage.md)
+- [Lab 27 — Troubleshoot Network Issues](labs/lab-27-troubleshoot-network.md)
+- [Lab 28 — Troubleshoot Security Issues (SELinux, ACL, Certs)](labs/lab-28-troubleshoot-security.md)
+- [Lab 29 — Troubleshoot Performance (CPU, Memory, I/O)](labs/lab-29-troubleshoot-performance.md)
+- [Lab 30 — Capstone: End-to-End Server Build & Triage](labs/lab-30-capstone.md)
+
+---
+
+## Reference
+
+- [labs/tools.md](labs/tools.md) — Complete list of free tools (Killercoda + external)
+- `CompTIA Linux+ XK0-006 V8 Exam Objectives (4.0).pdf` — Official exam blueprint
+
+---
+
+## Free tools used
+
+All tooling is **100% free**. The bulk runs inside the disposable Killercoda VM via `apt`, `dnf` (in a Rocky container), or open-source binaries. A handful of labs link to free web tools used from your own browser:
+
+- **regex101** (web) — Lab 21
+- **Shellcheck online** (web) — Lab 21
+- **CompTIA exam objectives** (PDF) — every lab
+
+Full tool list: [labs/tools.md](labs/tools.md).
