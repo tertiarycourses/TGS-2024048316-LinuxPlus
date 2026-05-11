@@ -74,7 +74,7 @@ A complete set of **30 step-by-step labs** aligned to the CompTIA Linux+ XK0-006
 
 All tooling is **100% free**. The bulk runs inside the disposable Killercoda VM via `apt`, `dnf` (in a Rocky container), or open-source binaries. A handful of labs link to free web tools used from your own browser:
 
-- **regex101** (web) — Lab 21
+- **Regex Generator** (https://alfredang.github.io/regexgenerator/) — Lab 21
 - **Shellcheck online** (web) — Lab 21
 - **CompTIA exam objectives** (PDF) — every lab
 
