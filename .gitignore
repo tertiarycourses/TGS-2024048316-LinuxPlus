@@ -1,0 +1,23 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Office temp lock files
+~$*
+
+# Playwright MCP
+.playwright-mcp/
+
+# Local reference material (large vendor deck — not redistributed)
+/reference/
+
+# WSQ assessment materials (confidential — never pushed)
+/assessment/
+/assessment\ /
