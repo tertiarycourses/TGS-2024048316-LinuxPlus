@@ -52,6 +52,7 @@ COURSE = dict(
     days=2,
     lms="https://lms-tms.tertiaryinfotech.com/",
     killercoda="https://killercoda.com/playgrounds/scenario/ubuntu",
+    repo="https://github.com/tertiarycourses/TGS-2024048316-LinuxPlus",
     register="https://www.tertiarycourses.com.sg/wsq-comptia-linux-training.html",
     org_logo=os.path.join(ASSETS, "tertiary-infotech-logo.png"),
     course_logo=os.path.join(ASSETS, "comptia-linux-logo.png"),

@@ -215,6 +215,38 @@ def test_slide(act_title,text,kicker):
     rect(s,Inches(0.85),Inches(2.3),Inches(11.7),Inches(2.6),RGBColor(0xE8,0xF7,0xEE))
     txt(s,Inches(1.2),Inches(2.6),Inches(11),Inches(0.5),[[("✅  Test it",20,RGBColor(0x12,0x7A,0x3E),True)]])
     txt(s,Inches(1.2),Inches(3.3),Inches(11),Inches(1.4),[[(text,18,INK,False)]]); footer(s); return s
+def link_run(p, text, url, size=15, color=None, bold=True, font="Arial"):
+    """Add a run that is a REAL clickable hyperlink."""
+    r=p.add_run(); r.text=text; r.font.size=Pt(size); r.font.bold=bold; r.font.name=font
+    r.font.color.rgb=color or BLUE
+    r.hyperlink.address=url
+    return r
+def labs_access(repo, kc):
+    """Slide telling learners how to access all the labs from the course GitHub repo,
+    with the repo URL as a real clickable hyperlink."""
+    s=head(slide(),"Access the Hands-On Labs",kicker="ACCESS THE LABS · GITHUB",kcolor=RED)
+    # Repo panel with the clickable link
+    rect(s,Inches(0.85),Inches(1.95),Inches(11.63),Inches(1.7),LIGHT)
+    rect(s,Inches(0.85),Inches(1.95),Inches(0.12),Inches(1.7),RED)
+    txt(s,Inches(1.15),Inches(2.15),Inches(11),Inches(0.5),
+        [[("All 30 hands-on labs are on the course GitHub repository — access them by cloning or downloading:",16,INK,True)]])
+    lb=s.shapes.add_textbox(Inches(1.15),Inches(2.75),Inches(11.1),Inches(0.7)); lf=lb.text_frame; lf.word_wrap=True
+    lp=lf.paragraphs[0]
+    link_run(lp, repo, repo, size=19, color=BLUE, font="Consolas")   # clickable repo link
+    # Two how-to cards
+    cardw=Inches(5.66); y=Inches(4.0); ch=Inches(2.15)
+    for i,(col,ttl,lines) in enumerate([
+        (BLUE,"Option A — Clone with Git",
+         [f"git clone {repo}.git","cd TGS-2024048316-LinuxPlus/labs","Open any lab-XX-*.md and follow the steps"]),
+        (TEAL,"Option B — Download the ZIP",
+         ["On GitHub click the green Code button","Choose Download ZIP and unzip it","Open the labs/ folder"])]):
+        x=Inches(0.85)+i*(cardw+Inches(0.31))
+        rect(s,x,y,cardw,ch,LIGHT); rect(s,x,y,cardw,Inches(0.1),col)
+        txt(s,x+Inches(0.25),y+Inches(0.2),cardw-Inches(0.5),Inches(0.4),[[(ttl,15,col,True)]])
+        bullets(s,x+Inches(0.25),y+Inches(0.7),cardw-Inches(0.5),Inches(1.3),lines,size=12,mcolor=col,gap=6)
+    txt(s,Inches(0.85),Inches(6.35),Inches(11.6),Inches(0.5),
+        [[("Every lab runs free in the browser on Killercoda:  ",12,GREY,True),(kc,12,GREY,False)]])
+    footer(s)
 def brk(kind,dur,color=AMBER):
     s=slide(); rect(s,0,0,SW,SH,WHITE)
     rect(s,0,0,SW,Inches(0.22),color); rect(s,0,Inches(7.28),SW,Inches(0.22),color)
@@ -319,6 +351,7 @@ content("Your Workbench — Killercoda",[
  "A disposable Ubuntu VM — install packages, break things and reset with no risk.",
  "Type the commands yourself; muscle memory is what the exam tests.",
  "Reset the playground between labs that change kernel, firewall or systemd state."],kicker="HANDS-ON")
+labs_access(COURSE["repo"], COURSE["killercoda"])
 
 # ---------------- DOMAINS + LABS ----------------
 CARD_COLORS=[BLUE,TEAL,VIOLET]

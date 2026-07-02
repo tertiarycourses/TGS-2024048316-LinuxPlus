@@ -18,7 +18,7 @@ Generated deliverables live in [courseware/](courseware/):
 
 | Deliverable | File |
 |---|---|
-| **PPT** — visual training deck (all-white house style, 318 slides) | [courseware/PPT-CompTIA-Linux-Plus-XK0-006.pptx](courseware/PPT-CompTIA-Linux-Plus-XK0-006.pptx) |
+| **PPT** — visual training deck (all-white house style, 319 slides) | [courseware/PPT-CompTIA-Linux-Plus-XK0-006.pptx](courseware/PPT-CompTIA-Linux-Plus-XK0-006.pptx) |
 | **LP** — Lesson Plan (2-day, Word + PDF) | [courseware/LP-CompTIA-Linux-Plus-XK0-006.docx](courseware/LP-CompTIA-Linux-Plus-XK0-006.docx) |
 | **LG** — Learner Guide (Word + PDF) | [courseware/LG-CompTIA-Linux-Plus-XK0-006.docx](courseware/LG-CompTIA-Linux-Plus-XK0-006.docx) |
 

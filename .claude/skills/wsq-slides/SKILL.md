@@ -141,6 +141,15 @@ to this same reference.
    Then the **Thank You** closing slide. (TRAQOM here = the SSG **digital attendance**
    system, not a survey.)
 
+10. **Access the Labs slide.** If the course's hands-on labs live in a Git/GitHub
+    repository, include an **"Access the Hands-On Labs"** slide that shows the course
+    **GitHub repo URL as a REAL clickable hyperlink** (python-pptx: `run.hyperlink.address`),
+    plus how to get the labs — **Option A** clone (`git clone <repo>.git`) and **Option B**
+    download the ZIP (GitHub *Code → Download ZIP*) — as two colour-topped cards, and a note
+    that the labs run free in the browser (e.g. Killercoda). Place it in the admin / hands-on
+    intro (e.g. right after the workbench slide). The repo URL **must be clickable**, not
+    plain text.
+
 ## Visual design system (mandatory)
 
 Decks must look **professional and visual — never a wall of bullet text**. Build slides
@@ -188,14 +197,15 @@ Reference implementation: the AZ-104 course `courseware/build/build_slides.py` h
 9. Briefing for Assessment
 10. Assessment & Funding
 11. Assessment Flow (horizontal flow diagram)
-12. … topic content + activities (each topic: section divider → Key Concepts tile grid → labs cards → activity/step/verify slides → recap) …
-13. Summary / What You Achieved (tile grid)
-14. Courseware & Assessment on the LMS (download courseware, take assessment)
-15. Practice Exam (if available)
-16. **Assessment** (end reminder — rule 9)
-17. **Assessment Flow** (end flow diagram — rule 9)
-18. **Digital Attendance (Mandatory)** — TRAQOM · SSG (end — rule 9)
-19. Thank You
+12. Access the Hands-On Labs (clickable GitHub repo link — if labs are in a repo)
+13. … topic content + activities (each topic: section divider → Key Concepts tile grid → labs cards → activity/step/verify slides → recap) …
+14. Summary / What You Achieved (tile grid)
+15. Courseware & Assessment on the LMS (download courseware, take assessment)
+16. Practice Exam (if available)
+17. **Assessment** (end reminder — rule 9)
+18. **Assessment Flow** (end flow diagram — rule 9)
+19. **Digital Attendance (Mandatory)** — TRAQOM · SSG (end — rule 9)
+20. Thank You
 
 ## Lesson plan & assessment scheduling
 
