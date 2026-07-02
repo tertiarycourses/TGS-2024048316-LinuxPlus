@@ -41,8 +41,8 @@ for _cand in (os.path.join(REPO, ".claude/skills/tertiary-lesson-plan"),
 import prodoc  # cover page + version control + page numbers (same as LP/LG)
 
 # ─── EDIT PER COURSE ────────────────────────────────────────────────────────
-TITLE       = "Application Integration with Docker and Kubernetes"
-COURSE_CODE = "TGS-2021010366"
+TITLE       = "CompTIA Certified Linux+ Training"
+COURSE_CODE = "TGS-2024048316"
 # ────────────────────────────────────────────────────────────────────────────
 # The cover page renders prodoc's module-level TGS constant. Override it so the
 # assessment cover shows THIS course's ref (works with either prodoc version —
@@ -60,9 +60,9 @@ def _logo(name):
             return p
     return None
 ORG_LOGO    = _logo("tertiary-infotech-logo.png")
-COURSE_LOGO = _logo("docker-k8s-course-logo.png")   # None if absent → Tertiary-only cover (as LP/LG)
+COURSE_LOGO = _logo("comptia-linux-logo.png")   # None if absent → Tertiary-only cover (as LP/LG)
 
-Q_VER, A_VER = "v5", "v5"   # single standardised version across all four files
+Q_VER, A_VER = "v1", "v1"   # single standardised version across all four files
 BRAND = RGBColor(0x1F, 0x6F, 0xEB); DARK = RGBColor(0x11, 0x18, 0x27); GREY = RGBColor(0x55, 0x5B, 0x66)
 # Assessments carry the cover page only — no Document Version Control Record.
 
@@ -70,229 +70,199 @@ BRAND = RGBColor(0x1F, 0x6F, 0xEB); DARK = RGBColor(0x11, 0x18, 0x27); GREY = RG
 # (criterion, context, question, [model-answer points]) — each traces to the course slides.
 WRITTEN = [
  ("K1",
-  "Containers have largely replaced virtual machines as the unit of application packaging. A VM virtualises "
-  "hardware and runs a full guest operating system on a hypervisor, while a container packages just the "
-  "application and its dependencies.",
-  "What are the differences between a Virtual Machine and a container, and why do these differences matter in "
-  "modern application development?",
-  ["A VM virtualises hardware and runs a full guest OS on a hypervisor; a container shares the host OS kernel "
-   "and packages only the application plus its dependencies.",
-   "VMs are heavier: gigabytes in size, boot in seconds–minutes, and carry hypervisor overhead "
-   "(e.g. VMware, VirtualBox, EC2).",
-   "Containers are lighter: megabytes in size, start in milliseconds, with minimal overhead "
-   "(e.g. Docker, containerd).",
-   "Why it matters: containers pack many more workloads per host, give consistent 'build once, run anywhere' "
-   "environments, and start/scale fast — ideal for microservices and CI/CD. "
-   "(Slides: Why Containers — Virtual Machines vs Containers / How It Works — Docker Architecture)"]),
+  "A Linux server must be brought up from power-on and its files organised in a predictable way. Domain 1 "
+  "(System Management) covers the boot chain and the Filesystem Hierarchy Standard.",
+  "Describe the Linux boot process from power-on to a login prompt, explaining the roles of the firmware/UEFI, "
+  "GRUB2, the kernel, the initramfs and systemd. What is the Filesystem Hierarchy Standard (FHS) and why does "
+  "it matter to an administrator?",
+  ["Firmware/UEFI (or BIOS) initialises the hardware and hands off to the boot loader.",
+   "GRUB2 loads the Linux kernel and the initramfs, passing the kernel command line (root device, options).",
+   "The kernel mounts the initramfs (a small cpio archive) as a temporary root to load storage/crypto modules, "
+   "then mounts the real root filesystem.",
+   "systemd (PID 1) starts services and reaches a target (e.g. multi-user.target / graphical.target), ending at "
+   "a login prompt.",
+   "The FHS is the standard layout of the root filesystem — /etc (config), /var (variable data/logs), /usr "
+   "(programs), /home (users), /bin, /sbin, /proc & /sys (virtual). It matters because it lets admins and tools "
+   "find files predictably across distributions. "
+   "(Slides: Domain 1 — Key Concepts / Lab 1 — Boot Process & Filesystem Hierarchy)"]),
  ("K2",
-  "A Docker image is built automatically from a text recipe. Getting the instructions and their order right "
-  "controls both what the image contains and how fast it rebuilds.",
-  "How do you create a Docker image, and what are the key instructions in a Dockerfile?",
-  ["A Dockerfile is a text recipe of instructions Docker runs to build an image automatically; you build it "
-   "with `docker build -t <name> .`.",
-   "Key instructions: FROM (base image), WORKDIR, COPY, RUN, ENV, EXPOSE, VOLUME, and CMD / ENTRYPOINT.",
-   "Each instruction creates a cached layer; unchanged layers are reused for fast rebuilds. Order matters — put "
-   "rarely-changing steps first (COPY requirements.txt + RUN pip install BEFORE COPY . .) to keep dependencies "
-   "cached, and use a .dockerignore to keep junk out of the build context.",
-   "CMD sets a default, overridable command; ENTRYPOINT sets a fixed executable with args appended. "
-   "(Slides: Building Images — What is a Dockerfile? / Layers & Cache / CMD vs ENTRYPOINT)"]),
+  "Domain 2 (Services and User Management) covers how Linux stores local accounts and how work is run as "
+  "services or on a schedule.",
+  "Explain how Linux stores and manages local user accounts, including the roles of /etc/passwd, /etc/shadow "
+  "and /etc/group. Then contrast a systemd service with a cron (or at) job for running work on a schedule.",
+  ["/etc/passwd holds one line per account (username, UID, GID, home, login shell); it is world-readable.",
+   "/etc/shadow holds the hashed passwords and password-ageing fields, readable only by root.",
+   "/etc/group defines groups and their members; a user has one primary group and any number of supplementary "
+   "groups (usermod -aG). Accounts are managed with useradd/adduser, usermod, passwd and chage.",
+   "A systemd service (unit) runs and supervises a long-running or one-shot program — start/enable/status via "
+   "systemctl, with logs in journalctl; timers can trigger units on a schedule.",
+   "cron runs recurring five-field jobs (crontab), anacron catches missed jobs, and at runs a one-off job at a "
+   "given time. Use a service/timer for supervised, journald-integrated tasks; use cron/at for simple scheduled "
+   "commands. (Slides: Domain 2 — Key Concepts / Lab 9 — Accounts / Lab 10 — Processes & Scheduling / Lab 12 — systemd)"]),
  ("K3",
-  "Docker runs containers on a single host. As applications grow you need to run and manage many containers "
-  "reliably across a cluster of machines.",
-  "What are the benefits of using Kubernetes for deploying and managing containerised applications?",
-  ["Docker runs containers on one host; Kubernetes orchestrates them across a cluster of nodes.",
-   "It self-heals (restarts failed Pods), scales workloads up and down, and performs rolling updates with no "
-   "downtime.",
-   "It is declarative: you describe the desired state in YAML and Kubernetes continuously makes it true; "
-   "kubectl is the CLI (get / describe / apply / delete / scale / rollout).",
-   "Architecture: a Control Plane (API Server, etcd, Scheduler, Controller Manager) drives Worker Nodes "
-   "(kubelet, kube-proxy) that run your Pods. "
-   "(Slides: Orchestration — Why Kubernetes? / How It Works — Cluster Architecture)"]),
+  "Domain 3 (Security) covers firewalling at several layers of the netfilter stack and operating-system "
+  "hardening.",
+  "Linux firewalling can be configured at several layers. Describe ufw, firewalld and nftables/iptables and "
+  "explain what stateful (connection-tracking) inspection means. Give two OS-hardening techniques you would "
+  "apply to a newly built server.",
+  ["ufw (Uncomplicated Firewall) is a simple front end for allow/deny rules on ports/services — good for hosts.",
+   "firewalld manages the firewall with zones and rich rules and is common on RHEL-family systems.",
+   "iptables/nftables are the low-level netfilter front ends; nftables is the modern replacement and its inet "
+   "family covers both IPv4 and IPv6. All of them ultimately program the kernel's netfilter framework.",
+   "Stateful inspection means the firewall tracks connection state (NEW / ESTABLISHED / RELATED) via conntrack, "
+   "so it can allow return traffic for permitted connections and only accept genuinely new sessions.",
+   "OS-hardening examples (any two): harden SSH (PermitRootLogin no, key-only auth), apply least-privilege file "
+   "permissions/ACLs and remove unneeded SUID bits, enforce SELinux/AppArmor, run fail2ban, disable cleartext "
+   "services (telnet/FTP), keep the system patched. "
+   "(Slides: Domain 3 — Key Concepts / Lab 15 — Firewalls / Lab 16 — OS Hardening)"]),
  ("K4",
-  "In Kubernetes a Pod's IP address changes every time it restarts, scales or is updated, so clients cannot "
-  "target Pods directly. Services solve this.",
-  "Why do Pods need Services, and what are the main types of Service in Kubernetes and how does each function?",
-  ["Pod IPs change on every restart, scale or update, so you can't rely on them; a Service gives a stable "
-   "address and load-balances across the Pods it selects (by labels).",
-   "ClusterIP — internal only; reachable from inside the cluster for service-to-service traffic (the default).",
-   "NodePort — opens a fixed port (30000–32767) on every node, giving external access to the Service.",
-   "LoadBalancer — provisions an external (cloud) load balancer with a single external IP, extending NodePort; "
-   "the labs use ClusterIP and NodePort. "
-   "(Slide: Networking — Why Services?)"]),
+  "Domain 4 (Automation, Orchestration and Scripting) covers Infrastructure as Code and shell scripting.",
+  "What does it mean for an Ansible playbook to be idempotent, and why is that valuable? Then describe the core "
+  "Bash scripting constructs you would use to automate an administrative task, and name one tool you would use "
+  "to check a shell script for errors.",
+  ["Idempotent means running the playbook repeatedly converges the system to the same desired state without "
+   "making unnecessary changes — a task only changes something if it is not already correct.",
+   "It is valuable because runs are safe to repeat, produce predictable results, and avoid drift; handlers fire "
+   "only when a task reports 'changed', so services are not needlessly restarted.",
+   "Core Bash constructs: a shebang (#!/usr/bin/env bash); variables and parameter expansion (\"${1:-default}\"); "
+   "conditionals (if / case with [[ ]] test operators); loops (for / while / until); functions; and exit codes "
+   "($?).",
+   "Defensive scripts use set -euo pipefail and quote variables.",
+   "shellcheck is the standard static analyser used to catch common shell bugs (unquoted variables, wrong test "
+   "syntax). (Slides: Domain 4 — Key Concepts / Lab 20 — Ansible / Lab 21 — Bash Scripting)"]),
  ("K5",
-  "Not every workload runs forever. Alongside long-running Deployments, Kubernetes provides objects for work "
-  "that finishes.",
-  "What is the difference between a Job and a CronJob in Kubernetes, and when should each be used?",
-  ["A Job runs one or more Pods to completion — it runs to success and then stops, and does not restart on "
-   "success; use it for finite batch work (e.g. a one-off TaskBoard report or a database migration).",
-   "A CronJob runs Jobs on a schedule using standard cron syntax; use it for recurring scheduled work "
-   "(e.g. a nightly cleanup or backup).",
-   "Contrast with a Deployment, which keeps long-running Pods alive indefinitely (like a web server) — "
-   "Jobs and CronJobs are for work that is meant to finish. "
-   "(Slides: Persist & Schedule — Storage & Batch Workloads / Lab 19 — Jobs & CronJobs)"]),
+  "Domain 5 (Troubleshooting) covers monitoring vocabulary and a repeatable method for diagnosing performance "
+  "problems.",
+  "Describe the universal performance-troubleshooting loop. For a CPU bottleneck, a memory-pressure problem and "
+  "a disk-I/O bottleneck, name one command or counter you would use to confirm each. Briefly contrast SLA, SLI "
+  "and SLO.",
+  ["The loop: establish a baseline → reproduce/observe the spike → identify the bottleneck with the right "
+   "counter → remediate → verify recovery against the baseline.",
+   "CPU bottleneck: high load average vs core count, confirmed per-CPU with mpstat -P ALL or top (%us/%sy).",
+   "Memory pressure: free -m shows low available memory and vmstat shows non-zero si/so (swap in/out).",
+   "Disk-I/O bottleneck: iostat -x shows high %util and await (and processes stuck in D state); pidstat -d "
+   "attributes the I/O.",
+   "SLI = a measured indicator (e.g. request latency, error rate); SLO = the internal target for an SLI (e.g. "
+   "99.9% of requests < 200 ms); SLA = the external, contractual promise (often with penalties) built on SLOs. "
+   "(Slides: Domain 5 — Key Concepts / Lab 25 — Monitoring / Lab 29 — Performance)"]),
 ]
 
 # ---------------------------------------------------------------- PRACTICAL (ACTIVITY-BASED)
 SCENARIO = (
- "You have joined a startup as a DevOps engineer. The team is shipping a small web application and you own the "
- "full path from a single container to a Kubernetes cluster: containerise a Flask app and publish it to Docker "
- "Hub, stand up a multi-service stack with Docker Compose, then migrate the workload to Kubernetes — deploying "
- "and troubleshooting a Pod, exposing it with a Service, and giving it persistent storage. Complete the four "
- "tasks below; each mirrors a hands-on activity you did in class. For each task, paste your Dockerfile / YAML "
- "and a screenshot of your output as evidence.")
+ "You have been hired as a junior Linux administrator at CompTech Solutions, a medium-sized tech company that "
+ "has recently migrated its infrastructure to Linux to improve security and scalability. Your supervisor has "
+ "tasked you with keeping the company's CRM application running smoothly: evaluating change requests, producing "
+ "a short training guide, troubleshooting application issues from logs, analysing system performance, and "
+ "deploying a new feature package. Complete the four tasks below; each mirrors a hands-on lab you did in class. "
+ "For each task, paste your commands, your script and output snapshots, and any text-file contents as evidence.")
 
-# (label, criterion, task prompt, box caption, model-answer build steps citing the activity)
-BOX_CAP = "Paste your Dockerfile / YAML and a screenshot of your output in the box below"
+BOX_CAP = "Paste your commands, script and output snapshots, and text-file contents in the box below"
 PRACTICAL = [
- ("Task 1", "LO1",
-  "Containerise a Flask application (Docker). You are given a simple Flask note-taking app (app.py and "
-  "requirements.txt). "
-  "Part A — Write a Dockerfile that: uses python:3.12-slim; sets WORKDIR to /app; copies requirements.txt and "
-  "installs deps with pip install --no-cache-dir; copies the rest of the code; sets ENV DATA_DIR=/app/data and "
-  "APP_PORT=5000; declares /app/data as a VOLUME; EXPOSEs 5000; and runs the app with python app.py. "
-  "Part B — Build the image as notes-app, run it with the container port mapped to 5001 on the host, add a note "
-  "with curl -X POST -d \"note=Hello Docker\" http://localhost:5001/add and view it with curl "
-  "http://localhost:5001/notes. "
-  "Part C — Tag the image as <your-username>/notes-app:v1, push it to Docker Hub, and state the command someone "
-  "else would run to pull and use it. (Labs 3-4 — Build image · Lab 9 — Docker Hub.)",
+ ("Task 1", "LO4",
+  "Evaluate change requests and write a training guide. You've been given several change requests for the CRM "
+  "application — real-time data synchronisation, a new reporting module, and a database upgrade. "
+  "Part A — Write a Bash script (evaluate_changes.sh) that inspects the host's resources (CPU cores, available "
+  "memory and free disk space) and, using conditional logic and a loop, prints which requests are feasible on "
+  "the current system. Use a shebang, set -euo pipefail, variables, an if/[[ ]] test and a for loop, then "
+  "confirm the script is clean with shellcheck. "
+  "Part B — Write a short training guide (crm_training.txt) covering how to install and maintain the CRM "
+  "application. Provide your script, the output of running it, and the first lines of the training guide. "
+  "(Aligns to Lab 21 — Bash Scripting; Lab 24 — Responsible AI / documentation.)",
   BOX_CAP,
-  "Part A — Dockerfile:\n"
-  "FROM python:3.12-slim\n"
-  "WORKDIR /app\n"
-  "COPY requirements.txt .\n"
-  "RUN pip install --no-cache-dir -r requirements.txt\n"
-  "COPY . .\n"
-  "ENV DATA_DIR=/app/data\n"
-  "ENV APP_PORT=5000\n"
-  "VOLUME /app/data\n"
-  "EXPOSE 5000\n"
-  "CMD [\"python\", \"app.py\"]\n\n"
-  "Part B — Build & run:\n"
-  "docker build -t notes-app .\n"
-  "docker run -d -p 5001:5000 notes-app\n"
-  "curl -X POST -d \"note=Hello Docker\" http://localhost:5001/add\n"
-  "curl http://localhost:5001/notes\n\n"
-  "Part C — Push to Docker Hub:\n"
-  "docker tag notes-app <your-username>/notes-app:v1\n"
-  "docker login\n"
-  "docker push <your-username>/notes-app:v1\n"
-  "# Someone else pulls & runs:\n"
-  "docker pull <your-username>/notes-app:v1\n"
-  "docker run -p 5001:5000 <your-username>/notes-app:v1"),
- ("Task 2", "LO2",
-  "Deploy a multi-service site with Docker Compose. Stand up a WordPress site backed by a MySQL database. "
-  "Part A — Write a docker-compose.yml with two services: db using image mysql:8.0 with env "
-  "MYSQL_ROOT_PASSWORD=rootpass, MYSQL_DATABASE=wordpress, MYSQL_USER=wpuser, MYSQL_PASSWORD=wppass and a named "
-  "volume db-data mounted at /var/lib/mysql; and wordpress using image wordpress:latest, mapping host port 8080 "
-  "to container port 80, with env WORDPRESS_DB_HOST=db, WORDPRESS_DB_USER=wpuser, WORDPRESS_DB_PASSWORD=wppass, "
-  "WORDPRESS_DB_NAME=wordpress, and depends_on db. "
-  "Part B — Start the stack with docker compose up -d, confirm both services with docker compose ps, and open "
-  "http://localhost:8080 to reach the WordPress setup page. (Labs 10-12 — Docker Compose.)",
+  "Part A — evaluate_changes.sh:\n"
+  "#!/usr/bin/env bash\n"
+  "set -euo pipefail\n"
+  "cores=$(nproc)\n"
+  "mem_mb=$(free -m | awk '/^Mem:/{print $7}')            # available RAM (MB)\n"
+  "disk_mb=$(df -m --output=avail / | tail -1 | tr -d ' ')\n"
+  "# name:cores:mem_mb:disk_mb required\n"
+  "requests=(\"realtime-sync:2:1024:5000\" \"reporting:1:512:2000\" \"db-upgrade:4:2048:10000\")\n"
+  "for r in \"${requests[@]}\"; do\n"
+  "  IFS=':' read -r name c m d <<<\"$r\"\n"
+  "  if [[ $cores -ge $c && $mem_mb -ge $m && $disk_mb -ge $d ]]; then\n"
+  "    echo \"FEASIBLE: $name\"\n"
+  "  else\n"
+  "    echo \"NOT FEASIBLE: $name (needs ${c} cores, ${m}MB RAM, ${d}MB disk)\"\n"
+  "  fi\n"
+  "done\n"
+  "# Run & lint:\n"
+  "chmod +x evaluate_changes.sh && ./evaluate_changes.sh\n"
+  "shellcheck evaluate_changes.sh          # clean report\n\n"
+  "Part B — crm_training.txt (first lines):\n"
+  "CRM Application - Install & Maintenance Guide\n"
+  "1. Install:  sudo apt install ./crm_analytics.deb\n"
+  "2. Start:    sudo systemctl enable --now crm\n"
+  "3. Logs:     journalctl -u crm -f\n\n"
+  "Award the mark where the candidate uses resource checks (nproc / free / df), a conditional plus a loop, a "
+  "shellcheck-clean script, and a clear training guide. (Lab 21 — Bash Scripting; Lab 24 — documentation.)"),
+ ("Task 2", "LO5",
+  "Troubleshoot the CRM from its logs. The CRM application has been experiencing slowdowns. Analyse the provided "
+  "log file crm_app.log using Linux text-processing tools to find the errors and patterns behind the slowdown. "
+  "Filter the log for errors, count how often each error type occurs, and identify the busiest time window. "
+  "Document your findings and the steps you would take to resolve them in findings.txt. Provide the commands you "
+  "used, the output showing the relevant errors, and your findings file. "
+  "(Aligns to Lab 5 — Shell Operations & Text Processing; Lab 25 — Monitoring / log aggregation.)",
   BOX_CAP,
-  "Part A — docker-compose.yml:\n"
-  "services:\n"
-  "  db:\n"
-  "    image: mysql:8.0\n"
-  "    environment:\n"
-  "      MYSQL_ROOT_PASSWORD: rootpass\n"
-  "      MYSQL_DATABASE: wordpress\n"
-  "      MYSQL_USER: wpuser\n"
-  "      MYSQL_PASSWORD: wppass\n"
-  "    volumes:\n"
-  "      - db-data:/var/lib/mysql\n"
-  "  wordpress:\n"
-  "    image: wordpress:latest\n"
-  "    ports:\n"
-  "      - \"8080:80\"\n"
-  "    environment:\n"
-  "      WORDPRESS_DB_HOST: db\n"
-  "      WORDPRESS_DB_USER: wpuser\n"
-  "      WORDPRESS_DB_PASSWORD: wppass\n"
-  "      WORDPRESS_DB_NAME: wordpress\n"
-  "    depends_on:\n"
-  "      - db\n"
-  "volumes:\n"
-  "  db-data:\n\n"
-  "Part B — Run & verify:\n"
-  "docker compose up -d\n"
-  "docker compose ps        # both services Up\n"
-  "# Browse http://localhost:8080 -> WordPress setup page"),
- ("Task 3", "LO3",
-  "Deploy and troubleshoot a Pod in Kubernetes. "
-  "1) Create the namespace ckad-prep. 2) In it, create a Pod named mypod with image nginx:2.3.5 exposing port "
-  "80. 3) Identify why the container will not start and write the root cause to pod-error.txt. 4) Change the "
-  "Pod's image to nginx:1.15.12. 5) List the Pod and confirm it is Running. 6) Shell into the container, run ls, "
-  "note the output, and exit. 7) Retrieve the Pod's IP address. 8) Run a temporary busybox Pod, shell in and "
-  "wget the nginx Pod on port 80. 9) Show the logs of mypod. 10) Delete the Pod and the namespace. "
-  "(Labs 13-14 — Pods & Namespaces.)",
+  "Filter and quantify the errors:\n"
+  "grep -iE \"error|fail|timeout\" crm_app.log | head\n"
+  "grep -c -i error crm_app.log                      # total error count\n"
+  "awk '/ERROR/{print $NF}' crm_app.log | sort | uniq -c | sort -rn   # top error types\n"
+  "# Busiest window (group by hour):\n"
+  "awk '{print $2}' crm_app.log | cut -d: -f1 | sort | uniq -c | sort -rn | head\n"
+  "# For a running service, the journald equivalent:\n"
+  "journalctl -u crm --since \"1 hour ago\" -p err --no-pager\n\n"
+  "findings.txt:\n"
+  "- Most frequent error: database connection timeout (NN occurrences).\n"
+  "- Peak error volume between 14:00-15:00.\n"
+  "- Proposed fix: increase the DB connection-pool size, add the missing index, then restart crm.\n\n"
+  "Award the mark for correct grep / awk / sort / uniq filtering, identifying the dominant error and the peak "
+  "window, and a clear findings file with remediation steps. (Lab 5 — Text Processing; Lab 25 — Monitoring.)"),
+ ("Task 3", "LO5",
+  "Analyse performance and optimise. Review the provided performance_report.txt for the CRM host and identify at "
+  "least three underlying issues contributing to poor performance (consider CPU, memory, disk I/O and "
+  "processes). Then read user_feedback.txt and propose concrete changes to optimise the application. List the "
+  "commands you would run on a live host to confirm each issue, write the three issues and your analysis to "
+  "perf_issues.txt, and record your proposed changes. "
+  "(Aligns to Lab 29 — Performance Troubleshooting; Lab 10 — Processes, Jobs & Scheduling.)",
   BOX_CAP,
-  "1. Create namespace:\n"
-  "kubectl create namespace ckad-prep\n"
-  "2. Create the Pod (bad image):\n"
-  "kubectl run mypod --image=nginx:2.3.5 --port=80 -n ckad-prep\n"
-  "3. Diagnose — image nginx:2.3.5 does not exist -> ImagePullBackOff:\n"
-  "kubectl get pod -n ckad-prep            # STATUS: ImagePullBackOff\n"
-  "kubectl describe pod mypod -n ckad-prep # Events: manifest not found\n"
-  "echo \"Image nginx:2.3.5 does not exist on Docker Hub.\" > pod-error.txt\n"
-  "4. Fix the image:\n"
-  "kubectl set image pod mypod mypod=nginx:1.15.12 -n ckad-prep\n"
-  "5. Verify Running:\n"
-  "kubectl get pod -n ckad-prep            # STATUS: Running\n"
-  "6. Shell in (run ls, then exit):\n"
-  "kubectl exec -it mypod -n ckad-prep -- /bin/sh\n"
-  "7. Pod IP:\n"
-  "kubectl get pods -o wide -n ckad-prep\n"
-  "8. wget from a temporary busybox Pod:\n"
-  "kubectl run busybox --image=busybox --rm -it --restart=Never -n ckad-prep -- wget -O- <pod-ip>:80\n"
-  "9. Render logs:\n"
-  "kubectl logs mypod -n ckad-prep\n"
-  "10. Clean up:\n"
-  "kubectl delete pod mypod -n ckad-prep\n"
-  "kubectl delete namespace ckad-prep"),
- ("Task 4", "LO4",
-  "Kubernetes Services and persistent storage. "
-  "Part A — Create a deployment named myapp with 2 replicas of image nginx exposing container port 80. Expose "
-  "it so it is reachable from inside the cluster, and verify with a temporary busybox Pod running wget against "
-  "the Service. Then change the Service type so the Pods are reachable from outside the cluster and wget it "
-  "from outside. "
-  "Part B — Create a PersistentVolume my-pv of 1Gi using hostPath /tmp/k8s-data, and a PersistentVolumeClaim "
-  "my-pvc requesting 500Mi; verify the PVC is Bound. Create a Pod storage-pod (image busybox) that mounts the "
-  "PVC at /data and writes \"hello from storage\" to /data/message.txt. Delete and recreate the Pod, verify the "
-  "data persists, then clean up all resources. (Labs 15 — Deployments · 17 — Services · 18 — Storage.)",
+  "Confirm each issue on a live host:\n"
+  "uptime; mpstat -P ALL 1 3               # CPU: load > cores, a core pegged at 100%\n"
+  "free -m; vmstat 1 5                      # Memory: low available; si/so > 0 = swapping\n"
+  "iostat -x 1 3; pidstat -d 1 3            # Disk I/O: high %util/await; top writer PID\n"
+  "ps -eo pid,pcpu,pmem,stat,cmd --sort=-pcpu | head   # top consumers; D = I/O wait\n\n"
+  "perf_issues.txt (at least three):\n"
+  "1. CPU saturation - load average exceeds the core count (mpstat shows a thread at 100%).\n"
+  "2. Memory pressure - free shows little available RAM; vmstat si/so are non-zero (swapping).\n"
+  "3. Disk I/O bottleneck - iostat %util near 100% with high await; a process stuck in D state.\n\n"
+  "Proposed changes (from user_feedback.txt):\n"
+  "- Add an index/cache to cut database CPU; fix the memory leak or add RAM; move the DB to faster storage; "
+  "renice the heavy batch job so it stops starving the app.\n\n"
+  "Award the mark for mapping each symptom to the right counter (load vs mpstat, free vs vmstat si/so, iostat "
+  "%util/await), three genuine issues, and feedback-driven optimisations. (Lab 29 — Performance; Lab 10 — Processes.)"),
+ ("Task 4", "LO2",
+  "Deploy and test a new feature package. A new data-analytics feature is shipped as a Debian package, "
+  "crm_analytics.deb. Install it, configure it to run as a service, and test it. Show the commands to install "
+  "the package (resolving dependencies), enable and start it under systemd, confirm it is active and listening, "
+  "and read its logs. After testing, write a short performance assessment plus one suggested enhancement to "
+  "analytics_assessment.txt. Provide the install commands and output, the configure/test commands, and your "
+  "assessment file. (Aligns to Lab 11 — Software & Package Management; Lab 12 — Service Management with systemd.)",
   BOX_CAP,
-  "Part A — Routing traffic:\n"
-  "kubectl create deployment myapp --image=nginx --replicas=2 --port=80\n"
-  "kubectl expose deployment myapp --port=80 --target-port=80          # ClusterIP\n"
-  "kubectl run tmp --image=busybox --rm -it --restart=Never -- wget -O- myapp:80\n"
-  "# External access — switch to NodePort:\n"
-  "kubectl delete service myapp\n"
-  "kubectl expose deployment myapp --type=NodePort --port=80 --target-port=80\n"
-  "kubectl get svc myapp                      # note the 3xxxx NodePort\n"
-  "wget -O- localhost:<NodePort>\n\n"
-  "Part B — Persistent storage:\n"
-  "# pv.yaml\n"
-  "apiVersion: v1\n"
-  "kind: PersistentVolume\n"
-  "metadata: { name: my-pv }\n"
-  "spec:\n"
-  "  capacity: { storage: 1Gi }\n"
-  "  accessModes: [ReadWriteOnce]\n"
-  "  hostPath: { path: /tmp/k8s-data }\n"
-  "# pvc.yaml\n"
-  "apiVersion: v1\n"
-  "kind: PersistentVolumeClaim\n"
-  "metadata: { name: my-pvc }\n"
-  "spec:\n"
-  "  accessModes: [ReadWriteOnce]\n"
-  "  resources: { requests: { storage: 500Mi } }\n"
-  "kubectl apply -f pv.yaml && kubectl apply -f pvc.yaml\n"
-  "kubectl get pv,pvc                          # STATUS: Bound\n"
-  "# storage-pod mounts my-pvc at /data and writes message.txt\n"
-  "kubectl apply -f pod.yaml\n"
-  "kubectl exec storage-pod -- cat /data/message.txt   # hello from storage\n"
-  "kubectl delete pod storage-pod && kubectl apply -f pod.yaml\n"
-  "kubectl exec storage-pod -- cat /data/message.txt   # data persists\n"
-  "kubectl delete pod storage-pod; kubectl delete pvc my-pvc; kubectl delete pv my-pv"),
+  "Install the .deb (apt resolves dependencies):\n"
+  "sudo apt install ./crm_analytics.deb     # or: sudo dpkg -i crm_analytics.deb; sudo apt -f install\n"
+  "dpkg -l | grep crm-analytics             # confirm installed\n"
+  "dpkg -L crm-analytics | head             # files the package placed\n\n"
+  "Configure and run it as a service:\n"
+  "sudo systemctl daemon-reload\n"
+  "sudo systemctl enable --now crm-analytics\n"
+  "systemctl status crm-analytics --no-pager   # active (running)\n"
+  "ss -tlnp | grep crm-analytics               # confirm it is listening\n"
+  "journalctl -u crm-analytics -n 20 --no-pager\n\n"
+  "analytics_assessment.txt:\n"
+  "- Feature responds within acceptable latency; CPU/memory footprint reasonable under test load.\n"
+  "- Suggested enhancement: add a systemd timer for scheduled report generation, or cache results.\n\n"
+  "Award the mark for a correct .deb install with dependency resolution (apt install ./file.deb, or dpkg -i + "
+  "apt -f install), enabling/starting under systemd, verifying active + listening, reading journald logs, and a "
+  "sensible assessment. (Lab 11 — Packages; Lab 12 — systemd.)"),
 ]
 
 # ---------------------------------------------------------------- doc helpers
@@ -365,17 +335,41 @@ BRIEFING = [
     "Scripts are collected when time is up.",
 ]
 
+LMS_URL = "https://lms-tms.tertiaryinfotech.com/"
+
+def add_hyperlink(p, url, text):
+    """Add a real clickable Word hyperlink (blue, underlined) to paragraph p."""
+    r_id = p.part.relate_to(
+        url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+        is_external=True)
+    link = OxmlElement("w:hyperlink"); link.set(qn("r:id"), r_id)
+    run = OxmlElement("w:r"); rPr = OxmlElement("w:rPr")
+    sz = OxmlElement("w:sz"); sz.set(qn("w:val"), "22"); rPr.append(sz)  # 11pt
+    color = OxmlElement("w:color"); color.set(qn("w:val"), "0563C1"); rPr.append(color)
+    u = OxmlElement("w:u"); u.set(qn("w:val"), "single"); rPr.append(u)
+    run.append(rPr)
+    t = OxmlElement("w:t"); t.text = text; run.append(t)
+    link.append(run); p._p.append(link)
+    return link
+
 def instructions(doc, minutes_text):
     heading(doc, "Instructions to Candidate")
+    # None marks the upload instruction, which carries a clickable LMS hyperlink.
     items = [
         "This is an individual exercise.",
         "This is an open-book assessment.",
         f"A total of {minutes_text} is given to complete this assessment.",
-        "Submit your answers on the document provided.",
+        None,
     ] + BRIEFING
     for i, s in enumerate(items, 1):
         p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(4)
-        p.add_run(f"{i}.  {s}").font.size = Pt(11)
+        if s is None:
+            p.add_run(f"{i}.  Complete your answers on the document provided and "
+                      "upload the completed answers to the LMS at ").font.size = Pt(11)
+            add_hyperlink(p, LMS_URL, LMS_URL)
+            p.add_run(".").font.size = Pt(11)
+        else:
+            p.add_run(f"{i}.  {s}").font.size = Pt(11)
 
 def grading(doc, what):
     heading(doc, "Grading")
@@ -430,7 +424,7 @@ def build_pp(answers):
     para(doc, f"Course Code: {COURSE_CODE}", size=11, color=GREY, align=WD_ALIGN_PARAGRAPH.CENTER, after=12)
     if not answers:
         # Page 2 — candidate information, instructions and grading; the problem begins on the next page.
-        candidate_block(doc); instructions(doc, "90 minutes")
+        candidate_block(doc); instructions(doc, "1 hour")
         grading(doc, "Candidate has successfully completed all PP tasks and can explain the overall "
                      "functions and features used to achieve them.")
         page_break(doc)

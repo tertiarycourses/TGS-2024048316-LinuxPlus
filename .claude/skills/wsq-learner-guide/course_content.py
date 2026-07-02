@@ -30,10 +30,14 @@ def _find_repo():
 
 
 REPO = _find_repo()
-COURSEWARE = os.path.join(REPO, "courseware")     # generated documents land here
-ASSETS = os.path.join(COURSEWARE, "assets")
-# Structured lab content (extracted from labs/) lives in courseware/data/.
-BATCH_DIR = os.environ.get("LABS_BATCH_DIR", os.path.join(COURSEWARE, "data"))
+COURSEWARE = os.path.join(REPO, "courseware")     # generated documents land here (outputs only)
+
+# Build INPUTS live beside this single-source module (inside the wsq-learner-guide skill),
+# so courseware/ holds only generated deliverables.
+_SKILL_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS = os.path.join(_SKILL_DIR, "assets")                       # logos
+# Structured lab content (extracted from labs/) — the single source of truth.
+BATCH_DIR = os.environ.get("LABS_BATCH_DIR", os.path.join(_SKILL_DIR, "data"))
 
 # ---------------------------------------------------------------- course metadata
 COURSE = dict(
@@ -116,6 +120,50 @@ LEARNING_OUTCOMES = [
     "Monitor a Linux system and analyze and troubleshoot hardware, storage, network, security "
     "and performance issues using the right diagnostic tools.",
 ]
+
+# Short outcome label per domain (for the visual Learning-Outcome / What-You-Achieved tiles).
+DOMAIN_OUTCOMES = {
+    1: ("System Management", "Boot & FHS, kernel modules, LVM storage, networking, shell, backup, virtualization."),
+    2: ("Services & User Management", "Files, accounts, processes, packages, systemd services, containers."),
+    3: ("Security", "AAA/sudo/PAM, firewalls, OS & account hardening, cryptography, compliance & audit."),
+    4: ("Automation & Scripting", "Ansible IaC, Bash, Python, Git version control, responsible AI use."),
+    5: ("Troubleshooting", "Monitoring, and storage / network / security / performance triage."),
+}
+
+# 4 key-concept bullets per domain — drive the visual "Key Concepts" tile grid on the deck
+# and the domain intros in the Learner Guide, so the concepts stay aligned everywhere.
+DOMAIN_CONCEPTS = {
+    1: [
+        "The boot chain: firmware/UEFI → GRUB2 → kernel + initramfs → systemd; the FHS defines where files live.",
+        "Storage stacks up: partitions → LVM (PV → VG → LV) → filesystem (ext4/xfs/btrfs), mounted via /etc/fstab.",
+        "The network stack is read top-down: NetworkManager/Netplan config → ip/ss → DNS resolution → diagnostics.",
+        "Shell operations (redirection, pipes, text tools), backup (tar/rsync/dd) and virtualization (QEMU/KVM) round out the domain.",
+    ],
+    2: [
+        "Everything is a file: manage files/links/devices, and local accounts via /etc/passwd, /etc/shadow and /etc/group.",
+        "Processes have states, priorities and signals; jobs are scheduled with at, cron and anacron.",
+        "Software is installed with apt/dpkg and dnf/rpm, plus language (pip/npm/cargo) and sandboxed (snap/flatpak) managers.",
+        "systemd manages services, timers, mounts and targets; containers (Docker/Podman) package and isolate applications.",
+    ],
+    3: [
+        "AAA: authenticate (PAM/SSSD), authorize (sudo, Polkit) and account (journald, auditd) for every action.",
+        "Firewalls filter at every layer — ufw → firewalld → nftables/iptables — with stateful inspection and NAT.",
+        "OS & account hardening: permissions/ACLs, SELinux, SSH hardening, fail2ban, password policy and MFA.",
+        "Cryptography (GPG, LUKS2, OpenSSL, WireGuard) and compliance/audit (AIDE, rkhunter, OpenSCAP, CIS) protect data.",
+    ],
+    4: [
+        "Infrastructure as Code (Ansible, Puppet, OpenTofu) makes configuration repeatable and idempotent.",
+        "Bash scripting automates tasks with variables, conditionals, loops, functions and shellcheck-clean code.",
+        "Python (venv, modules, PEP 8) extends automation beyond the shell; Git version-controls all of it.",
+        "AI assistants are used responsibly: verify-before-paste, redact secrets, and follow a corporate AI policy.",
+    ],
+    5: [
+        "Monitoring vocabulary (SLA/SLI/SLO) and tools (SNMP, Prometheus, node_exporter) establish a baseline.",
+        "Troubleshooting is a loop: baseline → reproduce → identify with the right counter → remediate → verify.",
+        "Storage/OS faults (ENOSPC, inode exhaustion, failed units) and network faults (DNS, routing, MTU) each have a signature.",
+        "Security faults (SELinux, ACLs, certs, lockout) and performance faults (CPU, memory, I/O) close out the domain.",
+    ],
+}
 
 DAY_TOPICS = {
     1: [1, 2],   # Day 1: Domains 1 & 2

@@ -232,10 +232,19 @@ def build():
     prodoc.add_page_numbers(doc)
     prodoc.enable_update_fields(doc)
     doc.save(DOCX_OUT)
-    with open(MD_OUT, "w") as fh:
-        fh.write(md.text())
     print("wrote", DOCX_OUT)
-    print("wrote", MD_OUT)
+    # HARD RULE 1 (wsq-learner-guide): deliverables are DOCX + PDF ONLY — no Markdown mirror.
+    import subprocess
+    try:
+        subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir",
+                        COURSEWARE, DOCX_OUT], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=180)
+        print("wrote", DOCX_OUT.replace(".docx", ".pdf"))
+    except Exception as e:
+        print("PDF render skipped (run soffice manually):", e)
+    # Never leave a Markdown mirror in the repo (HARD RULE 1).
+    if os.path.exists(MD_OUT):
+        os.remove(MD_OUT)
 
 
 if __name__ == "__main__":

@@ -38,6 +38,7 @@ The script lives **in this skill** and runs **in place** — do NOT copy it into
 ## Document format (WSQ house style)
 - **Cover page** — same as the Lesson Plan / Learner Guide (Tertiary Infotech Academy logo, UEN, instrument name, "For", course logo, course title, TGS ref, "Conducted by", version). Cover page only — assessments do **not** include a Document Version Control Record.
 - **Question paper** — centred title block; **A: Trainee Information** (name, last 3 NRIC digits + alphabet, date); **B: Instructions to Candidate**; **C:** the questions/tasks with **boxed answer space**; and a **For Official Use Only** block (Grade C / NYC, assessor name/NRIC/date/signature).
+- **Submission instruction** — the Instructions to Candidate must tell the candidate to complete the answers on the document provided and **upload the completed answers to the LMS at https://lms-tms.tertiaryinfotech.com/** (rendered as a real clickable Word hyperlink). This replaces the old "email / upload to Google Drive" note. `build_assessment.py` already does this via its `LMS_URL` constant + `add_hyperlink()` helper — keep the link in sync there if the portal URL ever changes.
 - **Answer document** — the model answers / marking guide: each question/task with "Suggestive answers (not exhaustive):" bullet points (WA cites the slide/module; PP lists the lab build steps and cites the activities).
 - Body is **Arial 11**; every page has the copyright + page-number footer.
 
@@ -50,5 +51,6 @@ The script lives **in this skill** and runs **in place** — do NOT copy it into
 - [ ] Every WA question traces to a slide/module; every PP/CS answer traces to a class activity/lab.
 - [ ] One coherent PP scenario (not disconnected mini-cases).
 - [ ] Cover page present (no version-control record); question paper has Trainee Information, Instructions, boxed answers, and For Official Use Only.
+- [ ] Instructions to Candidate carry the clickable LMS submission link (https://lms-tms.tertiaryinfotech.com/), not a Google Drive / email note.
 - [ ] Answer-key wording is guidance ("award the mark where the candidate covers…"), not a rigid script.
 - [ ] Old/mismatched assessment files (previous versions, other courses) removed from the output folder.
