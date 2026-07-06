@@ -29,11 +29,11 @@ unset LABVAR
 mkdir -p /tmp/lab5 && cd /tmp/lab5
 pwd
 ls ./
-ls ../tmp
+ls ../../tmp
 ls /tmp/lab5
 ls -la ~/ | head
 cat ~/.bashrc 2>/dev/null | head -10 || echo "no .bashrc for root in this image"
-cat ~/.bash_profile 2>/dev/null || echo "no .bash_profile"
+#cat ~/.bash_profile 2>/dev/null || echo "no .bash_profile"
 cat /etc/profile | head
 ```
 
