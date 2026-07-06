@@ -106,8 +106,8 @@ rsync -avz /lab6/src/ /lab6/mirror/ | tail -5
 echo "new" > /lab6/src/docs/new.txt
 rm /lab6/src/logs/log1.bin
 rsync -avz --delete /lab6/src/ /lab6/mirror/ | tail -8
-diff -r /lab6/src /lab6/mirror && echo "mirror in sync"
-#diff -r --exclude=os-release src restore/src
+#diff -r /lab6/src /lab6/mirror && echo "mirror in sync"
+diff -r --exclude=os-release /lab6/src /lab6/mirror
 
 ```
 
