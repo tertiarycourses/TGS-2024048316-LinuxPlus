@@ -109,20 +109,20 @@ killall sleep 2>/dev/null
 ## Step 7 — Scheduling with at and cron
 
 ```bash
-cat storage.sh 
+//vi storage.sh 
 #!/bin/bash
 echo "=== Disk Usage Report - $(date '+%Y-%m-%d %H:%M:%S') ==="
 df -k -h | column -t
 echo "----------------------------------------"
 
-//cronatb -e
+//crontab -e
 choose 1
 
 */5 * * * * /root/storage.sh >> /var/log/disk_usage.log 2>&1
 
 cntl+x +Y
 
-//crintab -l
+//crontab -l
 
 #set execute persmisison to script to run 
 chmod +x storage.sh
